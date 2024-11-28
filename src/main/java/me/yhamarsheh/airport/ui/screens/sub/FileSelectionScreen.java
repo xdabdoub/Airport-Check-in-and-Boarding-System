@@ -49,8 +49,8 @@ public class FileSelectionScreen extends YazanScreen {
             File file = fileChooser.showOpenDialog(stage);
             if (file == null) return;
 
-            Airport.PRIMARY_MANAGER.getFileSystem().setMajorsData(file);
-            Airport.PRIMARY_MANAGER.getFileSystem().readMajorsData();
+            Airport.PRIMARY_MANAGER.getFileSystem().setFlightsFile(file);
+            Airport.PRIMARY_MANAGER.getFileSystem().readFlightsFile();
 
             selectMButton.setDisable(true);
             selectMButton.setText("Selected: " + file.getName());
@@ -62,8 +62,8 @@ public class FileSelectionScreen extends YazanScreen {
             File file = fileChooser.showOpenDialog(stage);
             if (file == null) return;
 
-            Airport.PRIMARY_MANAGER.getFileSystem().setStudentsData(file);
-            Airport.PRIMARY_MANAGER.getFileSystem().readStudentsData();
+            Airport.PRIMARY_MANAGER.getFileSystem().setPassengersFile(file);
+            Airport.PRIMARY_MANAGER.getFileSystem().readPassengersFile();
 
             selectSButton.setText("Selected: " + file.getName());
             selectSButton.setDisable(true);

@@ -23,7 +23,7 @@ public class FlightEditorScreen extends YazanScreen {
         super("title", "Flight Editor", false);
         this.currentFlight = currentFlight;
 
-        setup();
+        setCenter(setup());
     }
 
     @Override
@@ -73,6 +73,7 @@ public class FlightEditorScreen extends YazanScreen {
                 return;
             }
 
+            System.out.println(idF.getText());
             Flight flight = new Flight(Integer.parseInt(idF.getText()), destinationF.getText(), activeSF.isSelected());
             Airport.PRIMARY_MANAGER.getFlightsManager().addFlight(flight);
             flight.getUndoOperations().push(new Operation("Flight Created", " | Created a new flight with the id " + idF.getText() +

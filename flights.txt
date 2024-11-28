@@ -1,0 +1,8 @@
+FlightID,Destination,Status
+963,Bahrain,Active
+636,Jeddah,Active
+403,Beiruit,Inactive
+414,Muscat,Inactive
+904,Dubai,Active
+817,Istanbul,Active
+1051,London,Active

@@ -123,7 +123,11 @@ public class FlightsScreen extends YazanScreen {
 
         printAll.setOnAction(e -> {
             int i = 1;
-            for (Flight flight : tableView.getItems()) {
+//            for (Flight flight : tableView.getItems()) {
+//                System.out.println(i++ + ". " + flight.toString());
+//            }
+
+            for (Flight flight : Airport.PRIMARY_MANAGER.getFlightsManager().getFlights()) {
                 System.out.println(i++ + ". " + flight.toString());
             }
         });
@@ -141,6 +145,9 @@ public class FlightsScreen extends YazanScreen {
             System.out.println(tableView.getSelectionModel().getSelectedItem().toString());
         });
 
+        otherButtons.getChildren().addAll(printAll, printSelected);
+        otherButtons.setAlignment(Pos.CENTER);
+
         HBox filter = new HBox(20);
         Label filterLabel = UIUtils.label("Filter:", null, 0, null);
         ComboBox<String> filterCB = new ComboBox<>();
@@ -157,6 +164,8 @@ public class FlightsScreen extends YazanScreen {
         HBox searchBy = new HBox(20);
         Label searchByLabel = UIUtils.label("Search By:", null, 0, null);
         RadioButton id = new RadioButton("ID");
+        id.setSelected(true);
+
         RadioButton destination = new RadioButton("Destination");
         ToggleGroup toggleGroup = new ToggleGroup();
         id.setToggleGroup(toggleGroup);
@@ -171,7 +180,7 @@ public class FlightsScreen extends YazanScreen {
         });
 
         searchBy.getChildren().addAll(searchByLabel, id, destination);
-        searchBar.setAlignment(Pos.CENTER);
+        searchBy.setAlignment(Pos.CENTER);
 
         filter.getChildren().addAll(filterLabel, filterCB);
         filter.setAlignment(Pos.CENTER);
@@ -179,7 +188,7 @@ public class FlightsScreen extends YazanScreen {
         editorButtons.getChildren().addAll(insert, update, delete, viewPassengers, back);
         editorButtons.setAlignment(Pos.CENTER);
 
-        actions.getChildren().addAll(editorButtons);
+        actions.getChildren().addAll(editorButtons, otherButtons, filter, searchBy);
         actions.setAlignment(Pos.CENTER);
 
         vBox.getChildren().addAll(searchBox, tableView, actions);
@@ -206,6 +215,8 @@ public class FlightsScreen extends YazanScreen {
     }
 
     private void initializeFlights(TableView<Flight> tableView, String how) {
+        tableView.getItems().clear();
+
         for (Flight flight : Airport.PRIMARY_MANAGER.getFlightsManager().getFlights()) {
             if (how.equalsIgnoreCase("All Flights"))
                 tableView.getItems().add(flight);
@@ -222,7 +233,7 @@ public class FlightsScreen extends YazanScreen {
         tableView.getItems().clear();
 
         for (Flight flight : temp) {
-            if (String.valueOf((searchByDestination ? flight.getDestination() : flight.getId())).startsWith(input)) {
+            if (String.valueOf((searchByDestination ? flight.getDestination() : flight.getId())).toLowerCase().startsWith(input.toLowerCase())) {
                 tableView.getItems().add(flight);
             }
         }

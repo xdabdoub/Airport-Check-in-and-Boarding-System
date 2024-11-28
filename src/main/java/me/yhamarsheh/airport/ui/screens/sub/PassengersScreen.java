@@ -25,11 +25,12 @@ public class PassengersScreen extends YazanScreen {
         super("مــطــار اﻟــقــدس اﻟــدولــي", "Passengers Screen", false);
 
         this.currentFlight = currentFlight != null ? currentFlight : Airport.PRIMARY_MANAGER.getFlightsManager().getFirstFlight();
+        setCenter(setup());
     }
 
     @Override
     public Node setup() {
-        VBox vbox = new VBox(20);
+        VBox vBox = new VBox(20);
 
         TableView<Passenger> tableView = new TableView<>();
         setupTableView(tableView);
@@ -59,7 +60,7 @@ public class PassengersScreen extends YazanScreen {
         insert.setPrefHeight(20);
 
         insert.setOnAction(e -> {
-            UIHandler.getInstance().open(new FlightEditorScreen(null), 800, 500);
+//            UIHandler.getInstance().open(new PassengerEditorScreen(null), 800, 500);
         });
 
         Button update = new Button("Update");
@@ -72,7 +73,7 @@ public class PassengersScreen extends YazanScreen {
                 return;
             }
 
-            UIHandler.getInstance().open(new FlightEditorScreen(tableView.getSelectionModel().getSelectedItem()), 800, 500);
+//            UIHandler.getInstance().open(new PassengerEditorScreen(tableView.getSelectionModel().getSelectedItem()), 800, 500);
         });
 
         Button delete = new Button("Delete");
@@ -81,11 +82,11 @@ public class PassengersScreen extends YazanScreen {
 
         delete.setOnAction(e -> {
             if (tableView.getSelectionModel().getSelectedItem() == null) {
-                UIUtils.alert("A flight must be selected to delete!", Alert.AlertType.ERROR).show();
+                UIUtils.alert("A passenger must be selected to delete!", Alert.AlertType.ERROR).show();
                 return;
             }
 
-            Optional<ButtonType> confirmation = UIUtils.alert("Are you sure you'd like to PERMANENTLY delete this Flight?",
+            Optional<ButtonType> confirmation = UIUtils.alert("Are you sure you'd like to PERMANENTLY delete this passenger?",
                     Alert.AlertType.CONFIRMATION).showAndWait();
 
             if (confirmation.isEmpty()) return;
@@ -101,14 +102,6 @@ public class PassengersScreen extends YazanScreen {
             UIUtils.alert("Success!", Alert.AlertType.INFORMATION).show();
         });
 
-        Button viewPassengers = new Button("View Passengers");
-        viewPassengers.setPrefWidth(120);
-        viewPassengers.setPrefHeight(20);
-
-        viewPassengers.setOnAction(e -> {
-            UIHandler.getInstance().open(new PassengersScreen(tableView.getSelectionModel().getSelectedItem()), 800, 500);
-        });
-
         Button back = new Button("Back");
         back.setPrefHeight(20);
         back.setPrefWidth(120);
@@ -118,7 +111,7 @@ public class PassengersScreen extends YazanScreen {
         });
 
         HBox otherButtons = new HBox(20);
-        Button printAll = new Button("Print All Flights");
+        Button printAll = new Button("Print All Passengers");
         printAll.setPrefWidth(120);
         printAll.setPrefHeight(20);
 
@@ -129,30 +122,46 @@ public class PassengersScreen extends YazanScreen {
             }
         });
 
-        Button printSelected = new Button("Print Selected Flight");
+        Button printSelected = new Button("Print Selected Passenger");
         printSelected.setPrefWidth(120);
         printSelected.setPrefHeight(20);
 
         printSelected.setOnAction(e -> {
             if (tableView.getSelectionModel().getSelectedItem() == null) {
-                UIUtils.alert("A flight must be selected to print its data!", Alert.AlertType.ERROR).show();
+                UIUtils.alert("A passenger must be selected to print its data!", Alert.AlertType.ERROR).show();
                 return;
             }
 
             System.out.println(tableView.getSelectionModel().getSelectedItem().toString());
         });
 
+        otherButtons.getChildren().addAll(printAll, printSelected);
+        otherButtons.setAlignment(Pos.CENTER);
 
         HBox navigation = new HBox(20);
         Button navigateNext = new Button("Next Flight");
         navigateNext.setPrefWidth(120);
         navigateNext.setPrefHeight(20);
 
+        Label cFlight = UIUtils.label("Flight " + currentFlight.getId(), null, 0, null);
+
         Button navigatePrevious = new Button("Previous Flight");
         navigatePrevious.setPrefWidth(120);
         navigatePrevious.setPrefHeight(20);
 
-        return null;
+        navigation.getChildren().addAll(navigateNext, cFlight, navigatePrevious);
+        navigation.setAlignment(Pos.CENTER);
+
+        editorButtons.getChildren().addAll(insert, update, delete, back);
+        editorButtons.setAlignment(Pos.CENTER);
+
+        actions.getChildren().addAll(editorButtons);
+        actions.setAlignment(Pos.CENTER);
+
+        vBox.getChildren().addAll(searchBox, tableView, actions, otherButtons, navigation);
+        vBox.setAlignment(Pos.CENTER);
+
+        return vBox;
     }
 
     private void setupTableView(TableView<Passenger> tableView) {

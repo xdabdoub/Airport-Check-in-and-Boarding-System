@@ -20,6 +20,14 @@ public class Flight implements Comparable<Flight> {
         this.id = id;
         this.destination = destination;
         this.activeStatus = activeStatus;
+
+        this.vipQueue = new Queue<>(30);
+        this.regularQueue = new Queue<>(30);
+        this.undoOperations = new Stack<>(30);
+        this.redoOperations = new Stack<>(30);
+
+        this.boardedPassengers = new LinkedList<>();
+        this.cancelledPassengers = new LinkedList<>();
     }
 
     public int getId() {
@@ -138,7 +146,7 @@ public class Flight implements Comparable<Flight> {
 
     @Override
     public int compareTo(Flight o) {
-        return Integer.compare(this.getId(), o.getId());
+        return Integer.compare(o.getId(), this.getId());
     }
 
     @Override

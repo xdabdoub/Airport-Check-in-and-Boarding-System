@@ -33,7 +33,6 @@ public class FlightsManager {
 
     public Flight getFlightById(int id) {
         for (Flight flight : flights) {
-            if (flight.getId() > id) return null;
             if (flight.getId() == id) return flight;
         }
 
