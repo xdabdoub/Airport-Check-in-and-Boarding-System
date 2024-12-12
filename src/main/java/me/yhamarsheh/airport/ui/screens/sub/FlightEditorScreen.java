@@ -12,6 +12,7 @@ import me.yhamarsheh.airport.objects.Flight;
 import me.yhamarsheh.airport.objects.Operation;
 import me.yhamarsheh.airport.ui.UIHandler;
 import me.yhamarsheh.airport.ui.screens.YazanScreen;
+import me.yhamarsheh.airport.utilities.GeneralUtils;
 import me.yhamarsheh.airport.utilities.UIUtils;
 
 import java.util.Optional;
@@ -73,8 +74,12 @@ public class FlightEditorScreen extends YazanScreen {
                 return;
             }
 
-            System.out.println(idF.getText());
             Flight flight = new Flight(Integer.parseInt(idF.getText()), destinationF.getText(), activeSF.isSelected());
+            if (GeneralUtils.flightExists(flight)) {
+                UIUtils.alert("The entered flight ID already exists!", Alert.AlertType.ERROR).show();
+                return;
+            }
+
             Airport.PRIMARY_MANAGER.getFlightsManager().addFlight(flight);
             flight.getUndoOperations().push(new Operation("Flight Created", " | Created a new flight with the id " + idF.getText() +
                     ", destination " + destinationF.getText() + ", active " + activeSF.isSelected()) {

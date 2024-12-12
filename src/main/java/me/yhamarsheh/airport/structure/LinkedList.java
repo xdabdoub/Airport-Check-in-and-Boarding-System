@@ -1,5 +1,6 @@
 package me.yhamarsheh.airport.structure;
 
+import me.yhamarsheh.airport.objects.Flight;
 import me.yhamarsheh.airport.structure.nodes.Node;
 
 import java.util.Iterator;
@@ -82,6 +83,38 @@ public class LinkedList<T extends Comparable<T>> implements Iterable<T> {
 
         return false;
     }
+
+    public T next(T obj) {
+        if (head == null) return null;
+        for (Node<T> curr = head; curr != null; curr = curr.getNext()) {
+            if (curr.getData().compareTo(obj) == 0) {
+                if (curr.getNext() == null) return null;
+                return curr.getNext().getData();
+            }
+        }
+
+        return null;
+    }
+
+    public T previous(T obj) {
+        if (head == null) return null;
+
+        Node<T> curr = head;
+        Node<T> prev = null;
+
+        while (curr != null) {
+            if (curr.getData().compareTo(obj) == 0) {
+                if (prev == null) return null;
+                return prev.getData();
+            }
+            prev = curr;
+            curr = curr.getNext();
+        }
+
+        return null;
+    }
+
+
 
     public void removeDuplicates() {
         Node<T> current = head;

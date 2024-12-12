@@ -22,7 +22,7 @@ public class PassengersScreen extends YazanScreen {
 
     private Flight currentFlight;
     public PassengersScreen(Flight currentFlight) {
-        super("مــطــار اﻟــقــدس اﻟــدولــي", "Passengers Screen", false);
+        super("Al Aqsa International Airport (AQIA)", "Passengers Screen", false);
 
         this.currentFlight = currentFlight != null ? currentFlight : Airport.PRIMARY_MANAGER.getFlightsManager().getFirstFlight();
         setCenter(setup());
@@ -40,7 +40,7 @@ public class PassengersScreen extends YazanScreen {
         searchBar.setPromptText("\uD83D\uDD0D Enter search");
         searchBar.setPrefWidth(970);
 
-        searchBar.setOnKeyPressed(e -> {
+        searchBar.setOnKeyTyped(e -> {
             if (searchBar.getText().isEmpty()) {
                 initializePassengers(tableView);
                 return;
@@ -149,6 +149,24 @@ public class PassengersScreen extends YazanScreen {
         navigatePrevious.setPrefWidth(120);
         navigatePrevious.setPrefHeight(20);
 
+        navigateNext.setOnAction(e -> {
+            Flight flight = Airport.PRIMARY_MANAGER.getFlightsManager().getFlights().next(currentFlight);
+            if (flight == null) return;
+
+            currentFlight = flight;
+            cFlight.setText("Flight " + currentFlight.getId());
+            initializePassengers(tableView);
+        });
+
+        navigatePrevious.setOnAction(e -> {
+            Flight flight = Airport.PRIMARY_MANAGER.getFlightsManager().getFlights().previous(currentFlight);
+            if (flight == null) return;
+
+            currentFlight = flight;
+            cFlight.setText("Flight " + currentFlight.getId());
+            initializePassengers(tableView);
+        });
+
         navigation.getChildren().addAll(navigateNext, cFlight, navigatePrevious);
         navigation.setAlignment(Pos.CENTER);
 
@@ -186,7 +204,13 @@ public class PassengersScreen extends YazanScreen {
     }
 
     private void initializePassengers(TableView<Passenger> tableView) {
+        tableView.getItems().clear();
+
         for (Passenger passenger : currentFlight.getVipQueue()) {
+            tableView.getItems().add(passenger);
+        }
+
+        for (Passenger passenger : currentFlight.getBoardedPassengers()) {
             tableView.getItems().add(passenger);
         }
 
@@ -196,7 +220,6 @@ public class PassengersScreen extends YazanScreen {
     }
 
     private void search(TableView<Passenger> tableView, String input) {
-
         ObservableList<Passenger> temp = FXCollections.observableArrayList(tableView.getItems());
         tableView.getItems().clear();
 

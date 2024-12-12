@@ -38,7 +38,7 @@ public class FlightsScreen extends YazanScreen {
         searchBar.setPromptText("\uD83D\uDD0D Enter search");
         searchBar.setPrefWidth(970);
 
-        searchBar.setOnKeyPressed(e -> {
+        searchBar.setOnKeyTyped(e -> {
             if (searchBar.getText().isEmpty()) {
                 initializeFlights(tableView, searchHow);
                 return;

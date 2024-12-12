@@ -45,10 +45,15 @@ public class Queue<T> implements Iterable<T> {
 		return (T) stack.pop();
 	}
 
-	public void deleteItem(T data) {
+	public boolean deleteItem(T data) {
+		boolean found = false;
 		while (!stack.isEmpty()) {
 			T item = stack.pop();
-			if (!item.equals(data)) temp.push((T) stack.pop());
+			if (!item.equals(data)) {
+				temp.push((T) stack.pop());
+			} else {
+				found = true;
+			}
 		}
 
 		temp.push(data);
@@ -56,6 +61,8 @@ public class Queue<T> implements Iterable<T> {
 		while (!temp.isEmpty()) {
 			stack.push((T) temp.pop());
 		}
+
+		return found;
 	}
 
 	public T getFront() {
@@ -98,14 +105,15 @@ public class Queue<T> implements Iterable<T> {
 
 		@Override
 		public boolean hasNext() {
-			return !isEmpty();
+			return !temp.isEmpty();
 		}
 
 		@Override
 		public T next() {
-			T data = stack.peek();
-			stack.push(temp.pop());
+			T data = temp.pop();
+			stack.push(data);
 			return data;
 		}
 	}
+
 }

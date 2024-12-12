@@ -110,11 +110,10 @@ public class Flight implements Comparable<Flight> {
         }
     }
 
-    public void removePassenger(Passenger passenger) {
-        if (passenger == null) return;
+    public boolean removePassenger(Passenger passenger) {
+        if (passenger == null) return false;
 
         if (passenger.isVipMember()) {
-            vipQueue.deleteItem(passenger);
             undoOperations.push(new Operation("Remove VIP Passenger", passenger.getName() + " | " + getId() + " | Removed VIP passenger " + passenger.getName() + " from Flight " + getId()) {
 
                 @Override
@@ -127,8 +126,8 @@ public class Flight implements Comparable<Flight> {
                     vipQueue.deleteItem(passenger);
                 }
             });
+            return vipQueue.deleteItem(passenger);
         } else {
-            regularQueue.deleteItem(passenger);
             undoOperations.push(new Operation("Remove Regular Passenger", passenger.getName() + " | " + getId() + " | Removed regular passenger " + passenger.getName() + " from Flight " + getId()) {
 
                 @Override
@@ -141,12 +140,56 @@ public class Flight implements Comparable<Flight> {
                     regularQueue.deleteItem(passenger);
                 }
             });
+            return regularQueue.deleteItem(passenger);
         }
+    }
+
+    public void boardPassenger(Passenger passenger) {
+        if (passenger == null) return;
+        if (passenger.isVipMember()) vipQueue.deleteItem(passenger);
+        else regularQueue.deleteItem(passenger);
+
+        boardedPassengers.insert(passenger);
+        undoOperations.push(new Operation("Boarding", " | " + passenger.getName() + " | " + getId() +
+                " | Boarded " + passenger.getName() + " on Flight " + getId()) {
+            @Override
+            public void undo() {
+                boardedPassengers.delete(passenger);
+            }
+
+            @Override
+            public void redo() {
+                boardedPassengers.insert(passenger);
+            }
+        });
+    }
+
+    public void cancelPassenger(Passenger passenger) {
+        if (passenger == null) return;
+
+        cancelledPassengers.insert(passenger);
+        boolean foundInQueues = removePassenger(passenger);
+        boolean foundInBoarded = boardedPassengers.delete(passenger);
+
+        undoOperations.push(new Operation("Cancel", " | " + passenger.getName() + " | " +
+                getId() + " | Cancelled " + passenger.getName() + " from Flight " + getId()) {
+            @Override
+            public void undo() {
+                if (foundInBoarded) boardedPassengers.insert(passenger);
+                if (foundInQueues) addPassenger(passenger);
+            }
+
+            @Override
+            public void redo() {
+               if (foundInBoarded) boardedPassengers.delete(passenger);
+               if (foundInQueues) removePassenger(passenger);
+            }
+        });
     }
 
     @Override
     public int compareTo(Flight o) {
-        return Integer.compare(o.getId(), this.getId());
+        return Integer.compare(this.getId(), o.getId());
     }
 
     @Override

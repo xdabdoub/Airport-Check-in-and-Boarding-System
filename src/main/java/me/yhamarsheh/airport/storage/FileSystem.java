@@ -30,15 +30,12 @@ public class FileSystem {
                 Flight flight;
                 try {
                     flight = FileUtils.getFlightFromString(line);
-                    System.out.println(flight.getId());
                 } catch (IllegalArgumentException ex) {
                     System.out.println(ex.getMessage());
                     continue;
                 }
 
-                System.out.println(flight.getId());
                 Airport.PRIMARY_MANAGER.getFlightsManager().getFlights().insert(flight); // Manual Insertion to avoid having undo/redo operations on data loading
-                if (flight.getId() == 1051) System.out.println("added flight 1051");
             }
         } catch (FileNotFoundException e) {
             System.out.println("Could not find flights file.");
