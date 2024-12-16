@@ -244,13 +244,12 @@ public class LinkedList<T extends Comparable<T>> implements Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            // TODO Auto-generated method stub
-            if (current == null) return false;
-            return current.getNext() != null;
+            return current != null;
         }
 
         @Override
         public T next() {
+            if (current == null) return null;
             T data = current.getData();
             current = current.getNext();
             return data;

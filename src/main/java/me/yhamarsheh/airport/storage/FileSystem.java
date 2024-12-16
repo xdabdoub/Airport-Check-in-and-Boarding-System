@@ -24,7 +24,6 @@ public class FileSystem {
         try (Scanner scanner = new Scanner(flightsFile)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                System.out.println(line);
                 if (line.isEmpty()) continue;
 
                 Flight flight;

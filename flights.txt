@@ -1,9 +1,11 @@
-FlightID,Destination,Status
-1051,London,Active
-1050,London,Active
-963,Bahrain,Active
-636,Jeddah,Active
-403,Beiruit,Inactive
-414,Muscat,Inactive
-904,Dubai,Active
-817,Istanbul,Active
+FlightID, Destination, Status
+9,D9,Active
+6,D6,Active
+3,D3,Active
+7,D7,Inactive
+10,D10,Active
+4,D4,Active
+5,D5,Inactive
+8,D8,Active
+1,D1,Active
+2,D2,Inactive

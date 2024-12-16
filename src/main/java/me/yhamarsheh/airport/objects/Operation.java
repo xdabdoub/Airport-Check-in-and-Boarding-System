@@ -30,4 +30,9 @@ public abstract class Operation {
     public abstract void undo();
     public abstract void redo();
 
+    @Override
+    public String toString() {
+        return localDate.toString() + " " + type + " " + description;
+    }
+
 }

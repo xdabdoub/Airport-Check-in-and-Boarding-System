@@ -7,7 +7,6 @@ public class FileUtils {
 
     public static Flight getFlightFromString(String s) {
         String[] data = s.split(",");
-        System.out.println(s);
         if (data.length != 3) throw new IllegalArgumentException("Invalid flight string: " + s);
 
         int id;
