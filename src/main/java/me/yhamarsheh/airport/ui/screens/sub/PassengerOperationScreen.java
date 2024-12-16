@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import me.yhamarsheh.airport.objects.Flight;
 import me.yhamarsheh.airport.objects.Passenger;
+import me.yhamarsheh.airport.ui.UIHandler;
 import me.yhamarsheh.airport.ui.screens.YazanScreen;
 import me.yhamarsheh.airport.utilities.GeneralUtils;
 import me.yhamarsheh.airport.utilities.UIUtils;
@@ -98,10 +99,18 @@ public class PassengerOperationScreen extends YazanScreen {
             textField.clear();
         });
 
+        Button back = new Button("Back");
+        back.setPrefWidth(200);
+        back.setPrefHeight(40);
+        back.setFont(new Font(18));
+        back.setOnAction(e -> {
+            UIHandler.getInstance().open(new OperationScreen(), 800, 800);
+        });
+
         actions.getChildren().addAll(checkInPassenger, boardPassenger, cancel);
         actions.setAlignment(Pos.CENTER);
 
-        details.getChildren().addAll(passId, actions);
+        details.getChildren().addAll(passId, actions, back);
         details.setAlignment(Pos.CENTER);
         return details;
     }

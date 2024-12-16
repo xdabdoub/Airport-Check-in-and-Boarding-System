@@ -128,6 +128,11 @@ public class FlightEditorScreen extends YazanScreen {
             String newDestination = destinationF.getText();
             boolean newActiveStatus = activeSF.isSelected();
 
+            if (GeneralUtils.getFlightById(newId) != null) {
+                UIUtils.alert("Unable to create a flight with this ID because another flight has this ID.", Alert.AlertType.ERROR).show();
+                return;
+            }
+
             currentFlight.setId(newId);
             currentFlight.setDestination(newDestination);
             currentFlight.setActiveStatus(newActiveStatus);

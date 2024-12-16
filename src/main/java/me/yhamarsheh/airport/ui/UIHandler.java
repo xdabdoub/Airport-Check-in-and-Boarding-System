@@ -38,4 +38,7 @@ public class UIHandler extends Application {
     public void open(YazanScreen yazanScreen, int x, int y) {
         stage.setScene(new Scene(yazanScreen, x, y));
     }
+    public Stage getStage() {
+        return stage;
+    }
 }

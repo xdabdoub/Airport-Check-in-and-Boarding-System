@@ -1,6 +1,7 @@
 package me.yhamarsheh.airport.managers.sub;
 
 import me.yhamarsheh.airport.objects.Flight;
+import me.yhamarsheh.airport.objects.Passenger;
 import me.yhamarsheh.airport.structure.LinkedList;
 
 public class FlightsManager {
@@ -37,6 +38,72 @@ public class FlightsManager {
         }
 
         return null;
+    }
+
+    public int getVIPCancellation() {
+        int count = 0;
+        for (Flight flight : flights) {
+            for (Passenger passenger : flight.getCancelledPassengers()) {
+                if (passenger.isVipMember()) count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int getRegularCancellation() {
+        int count = 0;
+        for (Flight flight : flights) {
+            for (Passenger passenger : flight.getCancelledPassengers()) {
+                if (!passenger.isVipMember()) count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int getVIPInQueue() {
+        int count = 0;
+        for (Flight flight : flights) {
+            for (Passenger passenger : flight.getVipQueue()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int getRegularInQueue() {
+        int count = 0;
+        for (Flight flight : flights) {
+            for (Passenger passenger : flight.getRegularQueue()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int getVIPBoarded() {
+        int count = 0;
+        for (Flight flight : flights) {
+            for (Passenger passenger : flight.getBoardedPassengers()) {
+                if (passenger.isVipMember()) count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int getRegularBoarded() {
+        int count = 0;
+        for (Flight flight : flights) {
+            for (Passenger passenger : flight.getBoardedPassengers()) {
+                if (!passenger.isVipMember()) count++;
+            }
+        }
+
+        return count;
     }
 
     public Flight getFirstFlight() {

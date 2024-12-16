@@ -41,8 +41,16 @@ public class HomeScreen extends YazanScreen {
         saveToFile.setPrefHeight(30);
         saveToFile.setPrefWidth(220);
 
+        Button viewOperations = new Button("View Operations");
+        viewOperations.setPrefHeight(30);
+        viewOperations.setPrefWidth(220);
+
         viewFlights.setOnAction(e -> {
             UIHandler.getInstance().open(new FlightsScreen(), 800, 500);
+        });
+
+        viewOperations.setOnAction(e -> {
+            UIHandler.getInstance().open(new OperationScreen(), 800, 500);
         });
 
         viewLogFile.setOnAction(e -> {
@@ -65,7 +73,7 @@ public class HomeScreen extends YazanScreen {
         });
 
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(viewFlights, viewLogFile, viewStatistics, saveToFile);
+        vBox.getChildren().addAll(viewFlights, viewOperations, viewLogFile, viewStatistics, saveToFile);
         return vBox;
     }
 }

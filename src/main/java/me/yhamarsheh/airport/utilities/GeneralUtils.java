@@ -94,7 +94,6 @@ public class GeneralUtils {
 
     public static Flight getFlightById(int id) {
         for (Flight flight : Airport.PRIMARY_MANAGER.getFlightsManager().getFlights()) {
-            if (flight.getId() > id) return null;
             if (flight.getId() == id) return flight;
         }
 

@@ -47,23 +47,23 @@ public class Queue<T> implements Iterable<T> {
 
 	public boolean deleteItem(T data) {
 		boolean found = false;
+
 		while (!stack.isEmpty()) {
 			T item = stack.pop();
-			if (!item.equals(data)) {
-				temp.push((T) stack.pop());
-			} else {
+			if (item != null && !item.equals(data)) {
+				temp.push(item);
+			} else if (item != null) {
 				found = true;
 			}
 		}
 
-		temp.push(data);
-
 		while (!temp.isEmpty()) {
-			stack.push((T) temp.pop());
+			stack.push(temp.pop());
 		}
 
 		return found;
 	}
+
 
 	public T getFront() {
 		return (T) stack.peek();

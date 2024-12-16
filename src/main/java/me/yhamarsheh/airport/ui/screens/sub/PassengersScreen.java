@@ -60,7 +60,7 @@ public class PassengersScreen extends YazanScreen {
         insert.setPrefHeight(20);
 
         insert.setOnAction(e -> {
-//            UIHandler.getInstance().open(new PassengerEditorScreen(null), 800, 500);
+            UIHandler.getInstance().open(new PassengerEditorScreen(null, currentFlight), 800, 500);
         });
 
         Button update = new Button("Update");
@@ -73,7 +73,7 @@ public class PassengersScreen extends YazanScreen {
                 return;
             }
 
-//            UIHandler.getInstance().open(new PassengerEditorScreen(tableView.getSelectionModel().getSelectedItem()), 800, 500);
+            UIHandler.getInstance().open(new PassengerEditorScreen(tableView.getSelectionModel().getSelectedItem(), currentFlight), 800, 500);
         });
 
         Button delete = new Button("Delete");

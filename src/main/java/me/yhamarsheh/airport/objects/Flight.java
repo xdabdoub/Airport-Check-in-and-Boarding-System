@@ -21,10 +21,10 @@ public class Flight implements Comparable<Flight> {
         this.destination = destination;
         this.activeStatus = activeStatus;
 
-        this.vipQueue = new Queue<>(30);
-        this.regularQueue = new Queue<>(30);
-        this.undoOperations = new Stack<>(30);
-        this.redoOperations = new Stack<>(30);
+        this.vipQueue = new Queue<>(500);
+        this.regularQueue = new Queue<>(500);
+        this.undoOperations = new Stack<>(500);
+        this.redoOperations = new Stack<>(500);
 
         this.boardedPassengers = new LinkedList<>();
         this.cancelledPassengers = new LinkedList<>();

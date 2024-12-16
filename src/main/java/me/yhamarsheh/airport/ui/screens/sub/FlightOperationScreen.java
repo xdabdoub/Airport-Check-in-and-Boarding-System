@@ -1,5 +1,6 @@
 package me.yhamarsheh.airport.ui.screens.sub;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import me.yhamarsheh.airport.objects.Flight;
 import me.yhamarsheh.airport.objects.Operation;
+import me.yhamarsheh.airport.ui.UIHandler;
 import me.yhamarsheh.airport.ui.screens.YazanScreen;
 import me.yhamarsheh.airport.utilities.GeneralUtils;
 import me.yhamarsheh.airport.utilities.UIUtils;
@@ -38,11 +40,18 @@ public class FlightOperationScreen extends YazanScreen {
         undo.setFont(new Font(18));
 
         undo.setOnAction(e -> {
+            if (!allFilledCorrectly(textField)) {
+                UIUtils.alert("The flight ID field contains an invalid value.", Alert.AlertType.ERROR).show();
+                return;
+            }
+
             Flight flight = GeneralUtils.getFlightById(Integer.parseInt(textField.getText()));
             if (flight == null) {
                 UIUtils.alert("The entered flight seems to be invalid. Are you sure it exists?", Alert.AlertType.WARNING).show();
                 return;
             }
+
+            if (flight.getUndoOperations().isEmpty()) return;
 
             Operation operation = flight.getUndoOperations().pop();
             if (operation == null) return;
@@ -67,12 +76,18 @@ public class FlightOperationScreen extends YazanScreen {
         redo.setPrefHeight(40);
         redo.setFont(new Font(18));
         redo.setOnAction(e -> {
+            if (!allFilledCorrectly(textField)) {
+                UIUtils.alert("The flight ID field contains an invalid value.", Alert.AlertType.ERROR).show();
+                return;
+            }
+
             Flight flight = GeneralUtils.getFlightById(Integer.parseInt(textField.getText()));
             if (flight == null) {
                 UIUtils.alert("The entered flight seems to be invalid. Are you sure it exists?", Alert.AlertType.WARNING).show();
                 return;
             }
 
+            if (flight.getRedoOperations().isEmpty()) return;
             Operation operation = flight.getRedoOperations().pop();
             if (operation == null) return;
             operation.redo();
@@ -81,17 +96,39 @@ public class FlightOperationScreen extends YazanScreen {
             flight.getUndoOperations().push(new Operation("Redo", " | " + operation.getType() + " | " + operation.getDescription()) {
                 @Override
                 public void undo() {
-                    operation.redo();
+                    operation.undo();
                 }
 
                 @Override
                 public void redo() {
-                    operation.undo();
+                    operation.redo();
                 }
             });
         });
 
+        Button back = new Button("Back");
+        back.setPrefWidth(200);
+        back.setPrefHeight(40);
+        back.setFont(new Font(18));
+        back.setOnAction(e -> {
+            UIHandler.getInstance().open(new OperationScreen(), 800, 800);
+        });
+
         actions.getChildren().addAll(undo, redo);
-        return null;
+        actions.setAlignment(Pos.CENTER);
+        details.getChildren().addAll(label, textField, actions, back);
+        details.setAlignment(Pos.CENTER);
+        return details;
+    }
+
+    private boolean allFilledCorrectly(TextField flightTF) {
+        if (flightTF.getText().isEmpty()) return false;
+        try {
+            Integer.parseInt(flightTF.getText());
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
     }
 }
